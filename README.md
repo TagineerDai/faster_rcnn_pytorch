@@ -1,43 +1,26 @@
 # Faster RCNN with PyTorch
-**Note:** I re-implemented faster rcnn in this project when I started learning PyTorch. Then I use PyTorch in all of my projects. I still remember it costed one week for me to figure out how to build cuda code as a pytorch layer :).
-But actually this is not a good implementation and I didn't achieve the same mAP as the original caffe code. 
-
-**This project is no longer maintained and may not compatible with the newest pytorch (after 0.4.0). So I suggest:**
-- You can still read and study this code if you want to re-implement faster rcnn by yourself;
-- You can use the better PyTorch implementation by [ruotianluo](https://github.com/ruotianluo/pytorch-faster-rcnn) 
-or [Detectron.pytorch](https://github.com/roytseng-tw/Detectron.pytorch) if you want to train  faster rcnn with your own data;
 
 This is a [PyTorch](https://github.com/pytorch/pytorch)
-implementation of Faster RCNN. 
-This project is mainly based on [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn)
-and [TFFRCNN](https://github.com/CharlesShang/TFFRCNN).
+implementation of Faster RCNN. Forked from [longcw/faster_rcnn_pytorch](https://github.com/longcw/faster_rcnn_pytorch).
 
-For details about R-CNN please refer to the [paper](https://arxiv.org/abs/1506.01497) 
-Faster R-CNN: Towards Real-Time Object Detection with Region Proposal Networks 
-by Shaoqing Ren, Kaiming He, Ross Girshick, Jian Sun.
+- [x] Compatible to python3.6 and pytorch 4.0.
+- [ ] Refactor as a model module.
+- [ ] Json meta configuable.
+- [ ] Several datasets.
 
-### Progress
-
-- [x] Forward for detecting
-- [x] RoI Pooling layer with C extensions on CPU (only forward)
-- [x] RoI Pooling layer on GPU (forward and backward)
-- [x] Training on VOC2007
-- [x] TensroBoard support
-- [x] Evaluation
+## Origin doc below
 
 ### Installation and demo
 0. Install the requirements (you can use pip or [Anaconda](https://www.continuum.io/downloads)):
 
     ```
-    conda install pip pyyaml sympy h5py cython numpy scipy
-    conda install -c menpo opencv3
-    pip install easydict
+    pip3 install menpo pyyaml sympy h5py cython numpy scipy easydict
     ```
 
 
 1. Clone the Faster R-CNN repository
     ```bash
-    git clone git@github.com:longcw/faster_rcnn_pytorch.git
+    git clone git@github.com:tagineerdai/faster_rcnn_pytorch.git
     ```
 
 2. Build the Cython modules for nms and the roi_pooling layer
@@ -46,7 +29,7 @@ by Shaoqing Ren, Kaiming He, Ross Girshick, Jian Sun.
     ./make.sh
     ```
 3. Download the trained model [VGGnet_fast_rcnn_iter_70000.h5](https://drive.google.com/open?id=0B4pXCfnYmG1WOXdpYVFybWxiZFE) 
-and set the model path in `demo.py`
+and put it in to `faster_rcnn_pytorch/model`
 3. Run demo `python demo.py`
 
 ### Training on Pascal VOC 2007
@@ -84,5 +67,3 @@ cd faster_rcnn_pytorch
 mkdir output
 python test.py
 ```
-
-License: MIT license (MIT)
