@@ -3,32 +3,20 @@ import torch
 import numpy as np
 from datetime import datetime
 
-from faster_rcnn import network
-from faster_rcnn.faster_rcnn import FasterRCNN, RPN
-from faster_rcnn.utils.timer import Timer
+from .faster_rcnn import network
+from .faster_rcnn.faster_rcnn import FasterRCNN, RPN
+from .faster_rcnn.utils.timer import Timer
 
-import faster_rcnn.roi_data_layer.roidb as rdl_roidb
-from faster_rcnn.roi_data_layer.layer import RoIDataLayer
-from faster_rcnn.datasets.factory import get_imdb
-from faster_rcnn.fast_rcnn.config import cfg, cfg_from_file
+from .faster_rcnn.roi_data_layer import roidb as rdl_roidb
+from .faster_rcnn.roi_data_layer.layer import RoIDataLayer
+from .faster_rcnn.datasets.factory import get_imdb
+from .faster_rcnn.fast_rcnn.config import cfg, cfg_from_file
 
-try:
-    from termcolor import cprint
-except ImportError:
-    cprint = None
-
+from utils.cprint import cprint
 try:
     from pycrayon import CrayonClient
 except ImportError:
     CrayonClient = None
-
-
-def log_print(text, color=None, on_color=None, attrs=None):
-    if cprint is not None:
-        cprint(text, color=color, on_color=on_color, attrs=attrs)
-    else:
-        print(text)
-
 
 
 # hyper-parameters
@@ -144,11 +132,11 @@ for step in range(start_step, end_step+1):
 
         log_text = 'step %d, image: %s, loss: %.4f, fps: %.2f (%.2fs per batch)' % (
             step, blobs['im_name'], train_loss / step_cnt, fps, 1./fps)
-        log_print(log_text, color='green', attrs=['bold'])
+        cprint(log_text, prefix='[.green][.bold]')
 
         if _DEBUG:
-            log_print('\tTP: %.2f%%, TF: %.2f%%, fg/bg=(%d/%d)' % (tp/fg*100., tf/bg*100., fg/step_cnt, bg/step_cnt))
-            log_print('\trpn_cls: %.4f, rpn_box: %.4f, rcnn_cls: %.4f, rcnn_box: %.4f' % (
+            cprint('\tTP: %.2f%%, TF: %.2f%%, fg/bg=(%d/%d)' % (tp/fg*100., tf/bg*100., fg/step_cnt, bg/step_cnt))
+            cprint('\trpn_cls: %.4f, rpn_box: %.4f, rcnn_cls: %.4f, rcnn_box: %.4f' % (
                 net.rpn.cross_entropy.data.cpu().numpy()[0], net.rpn.loss_box.data.cpu().numpy()[0],
                 net.cross_entropy.data.cpu().numpy()[0], net.loss_box.data.cpu().numpy()[0])
             )
