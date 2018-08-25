@@ -51,6 +51,7 @@ def _vis_proposals(im, dets, thresh=0.5):
     plt.tight_layout()
     plt.draw()
 
+
 def _get_image_blob(im):
     """Converts an image into a network input.
 
@@ -80,8 +81,11 @@ def _get_image_blob(im):
 
     return blob, im_info
 
+
 def im_proposals(net, im):
-    """Generate RPN proposals on a single image."""
+    """
+    Generate RPN proposals on a single image.
+    """
     blobs = {}
     blobs['data'], blobs['im_info'] = _get_image_blob(im)
     net.blobs['data'].reshape(*(blobs['data'].shape))
@@ -95,44 +99,49 @@ def im_proposals(net, im):
     scores = blobs_out['scores'].copy()
     return boxes, scores
 
-def imdb_proposals(net, imdb):
-    """Generate RPN proposals on all images in an imdb."""
 
+def imdb_proposals(net, imdb):
+    """
+    Generate RPN proposals on all images in an imdb.
+    """
     _t = Timer()
-    imdb_boxes = [[] for _ in xrange(imdb.num_images)]
-    for i in xrange(imdb.num_images):
+    imdb_boxes = [[] for _ in range(imdb.num_images)]
+    for i in range(imdb.num_images):
         im = cv2.imread(imdb.image_path_at(i))
         _t.tic()
         imdb_boxes[i], scores = im_proposals(net, im)
         _t.toc()
-        print 'im_proposals: {:d}/{:d} {:.3f}s' \
-              .format(i + 1, imdb.num_images, _t.average_time)
-        if 0:
+        print('im_proposals: {:d}/{:d} {:.3f}s' \
+              .format(i + 1, imdb.num_images, _t.average_time))
+        """
+        if False:
             dets = np.hstack((imdb_boxes[i], scores))
             # from IPython import embed; embed()
             _vis_proposals(im, dets[:3, :], thresh=0.9)
             plt.show()
-
+        """
     return imdb_boxes
 
-def imdb_proposals_det(net, imdb):
-    """Generate RPN proposals on all images in an imdb."""
 
+def imdb_proposals_det(net, imdb):
+    """
+    Generate RPN proposals on all images in an imdb.
+    """
     _t = Timer()
-    imdb_boxes = [[] for _ in xrange(imdb.num_images)]
-    for i in xrange(imdb.num_images):
+    imdb_boxes = [[] for _ in range(imdb.num_images)]
+    for i in range(imdb.num_images):
         im = cv2.imread(imdb.image_path_at(i))
         _t.tic()
         boxes, scores = im_proposals(net, im)
         _t.toc()
-        print 'im_proposals: {:d}/{:d} {:.3f}s' \
-              .format(i + 1, imdb.num_images, _t.average_time)
+        print('im_proposals: {:d}/{:d} {:.3f}s' \
+              .format(i + 1, imdb.num_images, _t.average_time))
         dets = np.hstack((boxes, scores))
         imdb_boxes[i] = dets
-
-        if 0:            
+        """
+        if False:            
             # from IPython import embed; embed()
             _vis_proposals(im, dets[:3, :], thresh=0.9)
             plt.show()
-
+        """
     return imdb_boxes
