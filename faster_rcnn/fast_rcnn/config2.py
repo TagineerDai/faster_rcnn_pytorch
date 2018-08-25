@@ -244,6 +244,7 @@ def get_output_dir(imdb, net):
     else:
         return osp.join(path, net)
 
+
 def _add_more_info(is_train):
     # compute all the scales
     if is_train:
@@ -256,7 +257,7 @@ def _add_more_info(is_train):
     num_scale_base = len(scales_base)
     num = (num_scale_base - 1) * num_per_octave + 1
     scales = []
-    for i in xrange(num):
+    for i in range(num):
         index_scale_base = i / num_per_octave
         sbase = scales_base[index_scale_base]
         j = i % num_per_octave
@@ -271,7 +272,7 @@ def _add_more_info(is_train):
         __C.TRAIN.SCALES = scales
     else:
         __C.TEST.SCALES = scales
-    print scales
+    print(scales)
 
 
     # map the scales to scales for RoI pooling of classification
@@ -303,7 +304,7 @@ def _add_more_info(is_train):
     num_aspect = len(aspect)
     widths = np.zeros((num_aspect), dtype=np.float32)
     heights = np.zeros((num_aspect), dtype=np.float32)
-    for i in xrange(num_aspect):
+    for i in range(num_aspect):
         widths[i] = math.sqrt(area / aspect[i])
         heights[i] = widths[i] * aspect[i]
 
@@ -314,6 +315,7 @@ def _add_more_info(is_train):
     else:
         __C.TEST.ASPECT_WIDTHS = widths
         __C.TEST.ASPECT_HEIGHTS = heights
+
 
 def _merge_a_into_b(a, b):
     """Merge config dictionary a into config dictionary b, clobbering the
